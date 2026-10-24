@@ -1,4 +1,5 @@
 """Bounties, clip QA, consent and payouts for chore-video data collection."""
+
 from __future__ import annotations
 
 import json
@@ -51,7 +52,15 @@ DEFAULT_BOUNTIES = [
     Bounty("fold-laundry", "Fold a basket of mixed laundry", 1.50, 60, 900),
     Bounty("load-dishwasher", "Load a dishwasher from a full sink", 1.20, 60, 600),
     Bounty("make-bed", "Strip and make a bed with fresh sheets", 1.80, 120, 900),
-    Bounty("tidy-room", "Tidy a cluttered room (third-person tripod)", 1.00, 120, 1200, view="third-person", min_resolution="720p"),
+    Bounty(
+        "tidy-room",
+        "Tidy a cluttered room (third-person tripod)",
+        1.00,
+        120,
+        1200,
+        view="third-person",
+        min_resolution="720p",
+    ),
 ]
 
 
@@ -88,7 +97,9 @@ class Marketplace:
 
         quality = round(100 * (0.6 * clip.hands_visible_ratio + 0.4 * clip.lighting))
         if quality < 50:
-            hard.append(f"quality {quality} below 50 (hands visible {clip.hands_visible_ratio:.0%}, lighting {clip.lighting:.0%})")
+            hard.append(
+                f"quality {quality} below 50 (hands visible {clip.hands_visible_ratio:.0%}, lighting {clip.lighting:.0%})"
+            )
         if hard:
             return self._reject(clip, hard, quality)
 
@@ -113,7 +124,19 @@ class Marketplace:
         lines = []
         for clip, rev in self.accepted:
             b = self.bounties[clip.bounty_id]
-            lines.append(json.dumps({"clip_id": clip.clip_id, "task": b.task, "bounty": b.bounty_id, "seconds": clip.seconds,
-                                     "view": clip.view, "resolution": clip.resolution, "fps": clip.fps, "quality": rev.quality,
-                                     "consent": True}))
+            lines.append(
+                json.dumps(
+                    {
+                        "clip_id": clip.clip_id,
+                        "task": b.task,
+                        "bounty": b.bounty_id,
+                        "seconds": clip.seconds,
+                        "view": clip.view,
+                        "resolution": clip.resolution,
+                        "fps": clip.fps,
+                        "quality": rev.quality,
+                        "consent": True,
+                    }
+                )
+            )
         return "\n".join(lines)

@@ -1,5 +1,7 @@
 # chore-footage
 
+[![CI](https://github.com/eliem08/chore-footage/actions/workflows/ci.yml/badge.svg)](https://github.com/eliem08/chore-footage/actions/workflows/ci.yml)
+
 > **Shutterstock for robot training videos** — get paid to film yourself doing chores.
 
 Humanoid and home-robot companies are starved for egocentric video of real
@@ -32,3 +34,25 @@ chore-footage demo
 - Face / PII auto-blur pipeline, household-member consent flow
 - Action segmentation labels (start/end of each sub-step) via labeller marketplace
 - Buyer licensing tiers (exclusive vs. non-exclusive)
+
+## Development
+
+Zero runtime dependencies; Python 3.10+.
+
+```bash
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -e ".[dev]"
+python -m unittest discover -s tests -t .           # unit + CLI smoke tests
+ruff check . && ruff format --check .               # lint + format
+```
+
+```
+chore_footage/core.py       domain logic (pure, importable, fully tested)
+chore_footage/__main__.py   CLI (`chore-footage ...` / `python -m chore_footage ...`)
+tests/                unit tests + generated CLI smoke tests
+```
+
+CI runs lint and tests on Ubuntu and Windows across Python 3.10, 3.12 and 3.13.
+Design, data model, trade-offs and production path: **[ARCHITECTURE.md](ARCHITECTURE.md)**.
+
+Part of the [agent-economy](https://github.com/eliem08/agent-economy) portfolio (idea #12).

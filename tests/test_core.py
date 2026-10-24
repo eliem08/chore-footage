@@ -5,8 +5,19 @@ from chore_footage import Bounty, Clip, Marketplace
 
 
 def clip(**kw):
-    base = dict(clip_id="c", contributor="u", bounty_id="b", seconds=120, resolution="1080p", fps=30, view="egocentric",
-                hands_visible_ratio=1.0, lighting=1.0, consent_signed=True, content_hash="")
+    base = dict(
+        clip_id="c",
+        contributor="u",
+        bounty_id="b",
+        seconds=120,
+        resolution="1080p",
+        fps=30,
+        view="egocentric",
+        hands_visible_ratio=1.0,
+        lighting=1.0,
+        consent_signed=True,
+        content_hash="",
+    )
     base.update(kw)
     return Clip(**base)
 
@@ -21,7 +32,9 @@ class Tests(unittest.TestCase):
         self.assertEqual(r.payout, 2.5)  # 2 min x $1 x 1.25
 
     def test_hard_rejections(self):
-        r = self.m.review(clip(consent_signed=False, bystander_faces=2, seconds=10, resolution="480p", fps=24, view="third-person"))
+        r = self.m.review(
+            clip(consent_signed=False, bystander_faces=2, seconds=10, resolution="480p", fps=24, view="third-person")
+        )
         self.assertFalse(r.accepted)
         self.assertEqual(len(r.reasons), 6)
 
