@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 from collections import defaultdict
 from dataclasses import dataclass, field
 
@@ -72,12 +73,22 @@ class Marketplace:
         self.minutes_filled: dict[str, float] = defaultdict(float)
         self.balances: dict[str, float] = defaultdict(float)
         self._hashes: set[str] = set()
+        self._clip_ids: set[str] = set()
 
     def review(self, clip: Clip) -> Review:
         b = self.bounties.get(clip.bounty_id)
         if not b:
             return self._reject(clip, ["unknown bounty"])
         hard = []
+        for name in ("hands_visible_ratio", "lighting"):
+            v = getattr(clip, name)
+            if not (isinstance(v, (int, float)) and math.isfinite(v) and 0 <= v <= 1):
+                return self._reject(clip, [f"{name} must be between 0 and 1, got {v!r}"])
+        if not clip.content_hash:
+            # without a hash the duplicate check cannot run, so the same footage could be paid again and again
+            hard.append("missing content hash")
+        if clip.clip_id in self._clip_ids:
+            hard.append("clip id already submitted")
         if not clip.consent_signed:
             hard.append("contributor consent not signed")
         if clip.bystander_faces:
@@ -111,8 +122,8 @@ class Marketplace:
         self.accepted.append((clip, rev))
         self.minutes_filled[b.bounty_id] += minutes
         self.balances[clip.contributor] += payout
-        if clip.content_hash:
-            self._hashes.add(clip.content_hash)
+        self._hashes.add(clip.content_hash)
+        self._clip_ids.add(clip.clip_id)
         return rev
 
     def _reject(self, clip, reasons, quality=0):

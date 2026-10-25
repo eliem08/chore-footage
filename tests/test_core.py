@@ -1,12 +1,16 @@
+import itertools
 import json
 import unittest
 
 from chore_footage import Bounty, Clip, Marketplace
 
+_ids = itertools.count(1)
+
 
 def clip(**kw):
+    n = next(_ids)
     base = dict(
-        clip_id="c",
+        clip_id=f"c{n}",
         contributor="u",
         bounty_id="b",
         seconds=120,
@@ -16,7 +20,7 @@ def clip(**kw):
         hands_visible_ratio=1.0,
         lighting=1.0,
         consent_signed=True,
-        content_hash="",
+        content_hash=f"h{n}",
     )
     base.update(kw)
     return Clip(**base)
@@ -50,6 +54,17 @@ class Tests(unittest.TestCase):
         self.m.review(clip(clip_id="ok"))
         rows = [json.loads(l) for l in self.m.export_manifest().splitlines()]
         self.assertEqual([r["clip_id"] for r in rows], ["ok"])
+
+    def test_footage_without_a_hash_or_with_a_reused_id_is_not_paid_again(self):
+        self.assertIn("missing content hash", self.m.review(clip(content_hash="")).reasons)
+        self.m.review(clip(clip_id="same", content_hash="a"))
+        self.assertIn("clip id already submitted", self.m.review(clip(clip_id="same", content_hash="b")).reasons)
+        self.assertEqual(sum(self.m.balances.values()), 2.5)  # only the one valid 2-minute clip (x1.25 bonus)
+
+    def test_quality_inputs_are_bounded(self):
+        for bad in ({"hands_visible_ratio": 5.0}, {"lighting": -1}, {"lighting": float("nan")}):
+            with self.subTest(bad=bad):
+                self.assertFalse(self.m.review(clip(**bad)).accepted)
 
 
 if __name__ == "__main__":
