@@ -1,15 +1,44 @@
-# chore-footage
+<!-- sell-kit:start -->
+# Chore Footage
 
 [![CI](https://github.com/eliem08/chore-footage/actions/workflows/ci.yml/badge.svg)](https://github.com/eliem08/chore-footage/actions/workflows/ci.yml)
 
-> **Shutterstock for robot training videos** — get paid to film yourself doing chores.
+> **Collect paid, consented chore videos that robotics teams can actually train on.**
 
-Humanoid and home-robot companies are starved for egocentric video of real
-people folding laundry, loading dishwashers and making beds. `chore-footage`
-is the marketplace back end: bounties for specific tasks, automated
-submission QA, consent tracking and contributor payouts.
+**Who it's for:** Robotics companies and data vendors sourcing egocentric training video.
 
-## What the MVP does
+**The problem:** Robot learning needs huge amounts of real household footage, and sourcing it with consent, quality control and fair pay is slow and messy.
+
+**What you get:** Bounties, consent and quality gates, duplicate-payout protection, quotas, contributor payouts and a buyer-ready manifest.
+
+## Quickstart
+
+Customers receive a release archive with the wheel and the examples. Python 3.10+ and no other dependencies.
+
+```bash
+pip install chore_footage-0.1.0-py3-none-any.whl
+chore-footage bounties
+chore-footage demo
+```
+
+## Pricing
+
+Every plan starts with a 14-day free trial. Prices in USD, billed monthly unless noted.
+
+| Plan | Price | Includes |
+|---|---|---|
+| **Pilot** | $499 per month | 3 active bounties; QA gates and payouts; Buyer manifest |
+| **Production** | $1,999 per month | Unlimited bounties; Custom quality rules; Contributor management |
+| **Enterprise** | Custom (contact sales) | Managed collection programs; Custom consent flows; Dedicated support |
+
+To start a trial or buy a plan, email **sales@YOUR-DOMAIN.com**.
+
+## Licence
+
+Proprietary. Copyright (c) 2026 eliem08. All rights reserved. Use requires a paid plan or an active trial; see [LICENSE](LICENSE).
+<!-- sell-kit:end -->
+
+## What it does
 
 - **Bounty catalogue**: task, pay per accepted minute, min/max clip length,
   required camera view (egocentric / third-person), min resolution & fps, quota

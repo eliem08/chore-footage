@@ -1,4 +1,4 @@
-"""Shutterstock for robot training videos: get paid to film yourself doing chores."""
+"""Chore Footage: Collect paid, consented chore videos that robotics teams can actually train on."""
 
 from .core import *
 
