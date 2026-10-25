@@ -6,11 +6,16 @@ import sys
 from .core import DEFAULT_BOUNTIES, Clip, Marketplace
 
 
-def _run(argv=None):
+def build_parser():
     ap = argparse.ArgumentParser(prog="chore-footage")
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("bounties")
     sub.add_parser("demo")
+    return ap
+
+
+def _run(argv=None):
+    ap = build_parser()
     a = ap.parse_args(argv)
     if a.cmd == "bounties":
         for b in DEFAULT_BOUNTIES:

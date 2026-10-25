@@ -1,0 +1,10 @@
+[
+ {
+  "op": "bounties",
+  "payload": {}
+ },
+ {
+  "op": "demo",
+  "payload": {}
+ }
+]

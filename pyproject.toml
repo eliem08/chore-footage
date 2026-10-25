@@ -23,6 +23,7 @@ dev = ["ruff>=0.6"]
 
 [project.scripts]
 chore-footage = "chore_footage.__main__:main"
+chore-footage-web = "chore_footage.web:main"
 
 [project.urls]
 Repository = "https://github.com/eliem08/chore-footage"
