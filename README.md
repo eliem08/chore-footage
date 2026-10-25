@@ -46,7 +46,7 @@ Every plan starts with a 14-day free trial. Prices in USD, billed monthly unless
 | **Production** | $1,999 per month | Unlimited bounties; Custom quality rules; Contributor management |
 | **Enterprise** | Custom (contact sales) | Managed collection programs; Custom consent flows; Dedicated support |
 
-To start a trial or buy a plan, email **sales@YOUR-DOMAIN.com**.
+To start a trial or buy a plan, [request access](https://github.com/eliem08/chore-footage/issues/new?title=Chore%20Footage%20trial&labels=sales).
 
 ## Licence
 
