@@ -47,20 +47,27 @@ To sell self-serve, set four variables and point a Stripe webhook at `https://<y
 |---|---|
 | `STRIPE_SECRET_KEY` | `sk_live_...` |
 | `STRIPE_WEBHOOK_SECRET` | `whsec_...` |
-| `STRIPE_PRICES` | `team=price_123,business=price_456` |
+| `STRIPE_PRICES` | `pilot=price_123,production=price_456` |
 | `PUBLIC_URL` | `https://chore-footage.example.com` |
 
 Buyers pick a plan on `/pricing`, pay on Stripe Checkout and see their API key once on the success page. Cancelling the subscription revokes the key. A selling server always requires a key.
 
 ## Pricing
 
-Every plan starts with a 14-day free trial. Prices in USD, billed monthly unless noted.
+Self-serve monthly plans start with a 14-day free trial. Prices in USD, billed monthly unless noted.
+All plans unlock the same software in this release — the code gates nothing by plan, so plan limits
+(e.g. 3 active bounties on Pilot) are licence terms, not enforced limits. Higher tiers add licence
+scope and support, not gated features.
 
 | Plan | Price | Includes |
 |---|---|---|
 | **Pilot** | $499 per month | 3 active bounties; QA gates and payouts; Buyer manifest |
-| **Production** | $1,999 per month | Unlimited bounties; Custom quality rules; Contributor management |
+| **Production** | $1,999 per month | Everything in Pilot |
 | **Enterprise** | Custom (contact sales) | Managed collection programs; Custom consent flows; Dedicated support |
+
+Enterprise is a service engagement, not self-serve checkout: it is contact-sales only and must not
+be added to `STRIPE_PRICES`. Copy `.env.example` to `.env` and fill in real values to configure
+billing.
 
 To start a trial or buy a plan, [request access](https://github.com/eliem08/chore-footage/issues/new?title=Chore%20Footage%20trial&labels=sales).
 

@@ -32,10 +32,11 @@ The MVP collects *all* hard failures, not just the first, so a contributor fixes
 - **Quota clipping.** A clip that overfills a bounty is paid only for the remaining minutes, never rejected outright.
 - **Consent as a hard gate**, recorded per clip and per bystander. The buyer manifest asserts consent.
 
-## 5. Production architecture
-Mobile app (on-device MediaPipe hand tracking), S3 multipart upload, a QA worker fleet (GPU for
-face detection and blur), Postgres (contributors, bounties, clips, ledger), Stripe Connect payouts,
-and dataset snapshots with manifests.
+## 5. Future production architecture (not shipped)
+Not shipped: the items below are the production path, not the current release, which is the
+metadata-QA MVP in §1. Mobile app (on-device MediaPipe hand tracking), S3 multipart upload, a QA
+worker fleet (GPU for face detection and blur), Postgres (contributors, bounties, clips, ledger),
+Stripe Connect payouts, and dataset snapshots with manifests.
 
 ## 6. Privacy & compliance
 Biometric laws (BIPA, GDPR Art. 9): faces are blurred before storage beyond the QA buffer, and
