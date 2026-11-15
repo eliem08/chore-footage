@@ -4,6 +4,7 @@ import os
 import sys
 
 from .core import DEFAULT_BOUNTIES, Clip, Marketplace
+from .ops import OPS, add_ops, run_ops
 
 
 def build_parser():
@@ -11,12 +12,15 @@ def build_parser():
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("bounties")
     sub.add_parser("demo")
+    add_ops(sub)
     return ap
 
 
 def _run(argv=None):
     ap = build_parser()
     a = ap.parse_args(argv)
+    if a.cmd in OPS:
+        return run_ops(a)
     if a.cmd == "bounties":
         for b in DEFAULT_BOUNTIES:
             print(

@@ -17,8 +17,9 @@ Customers receive a release archive with the wheel and the examples. Python 3.10
 
 ```bash
 pip install chore_footage-0.1.0-py3-none-any.whl
-chore-footage bounties
-chore-footage demo
+chore-footage submit ana fold-laundry examples/sample-clip.txt --seconds 120 --resolution 1080p --fps 30 --hands-visible 0.9 --lighting 0.9 --consent-signed --store footage.json
+chore-footage status --store footage.json
+chore-footage balances --store footage.json
 ```
 
 ## Web app and API
@@ -33,7 +34,7 @@ docker build -t chore-footage . && docker run -p 8000:8000 -e API_KEYS=sk_... -v
 
 Every API call needs `Authorization: Bearer <key>` once any key exists; a server on a public address refuses to start without one. Calls are rate-limited per key (60/min, `--rate`) and metered: `chore-footage-web usage` prints calls per key for billing.
 
-Endpoints: `POST /api/bounties`, `POST /api/demo`, plus `GET /healthz` and `GET /api/spec` (machine-readable field list).
+Endpoints: `POST /api/bounties`, `POST /api/demo`, `POST /api/bounty-add`, `POST /api/submit`, `POST /api/status`, `POST /api/balances`, `POST /api/payout`, `POST /api/manifest`, plus `GET /healthz` and `GET /api/spec` (machine-readable field list).
 Files are sent as `{"name": ..., "content": ...}`, folders as `{"files": [...]}` or a base64 zip.
 
 ## Deploy and sell

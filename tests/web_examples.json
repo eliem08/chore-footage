@@ -1,5 +1,36 @@
 [
  {
+  "op": "submit",
+  "payload": {
+   "contributor": "ana",
+   "bounty_id": "fold-laundry",
+   "clip": {
+    "name": "sample-clip.txt",
+    "content": "Placeholder for a video file in the quickstart. Submit a real clip in production.\n"
+   },
+   "seconds": 120.0,
+   "resolution": "1080p",
+   "fps": 30,
+   "view": "egocentric",
+   "hands_visible": 0.9,
+   "lighting": 0.9,
+   "consent_signed": true,
+   "bystander_faces": 0
+  }
+ },
+ {
+  "op": "status",
+  "payload": {}
+ },
+ {
+  "op": "balances",
+  "payload": {}
+ },
+ {
+  "op": "manifest",
+  "payload": {}
+ },
+ {
   "op": "bounties",
   "payload": {}
  },
