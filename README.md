@@ -55,15 +55,18 @@ Buyers pick a plan on `/pricing`, pay on Stripe Checkout and see their API key o
 
 ## Pricing
 
-Every plan starts with a 14-day free trial. Prices in USD, billed monthly unless noted.
+Monthly plans start with a 14-day free trial. Prices in USD, billed monthly unless noted.
 
 | Plan | Price | Includes |
 |---|---|---|
 | **Pilot** | $499 per month | 3 active bounties; QA gates and payouts; Buyer manifest |
-| **Production** | $1,999 per month | Unlimited bounties; Custom quality rules; Contributor management |
-| **Enterprise** | Custom (contact sales) | Managed collection programs; Custom consent flows; Dedicated support |
+| **Production** | $1,999 per month | Unlimited bounties; Per-bounty quality rules; Contributor balances and payout records |
+| **Enterprise** | Custom (contact sales) | Managed collection programs; Dedicated support |
 
 To start a trial or buy a plan, [request access](https://github.com/eliem08/chore-footage/issues/new?title=Chore%20Footage%20trial&labels=sales).
+
+Plan note: every plan runs the same software, and every API key unlocks all of it. Seat, agent and volume
+limits are licence terms; the code does not enforce them. Support, SLA and done-for-you items are services.
 
 ## Licence
 
