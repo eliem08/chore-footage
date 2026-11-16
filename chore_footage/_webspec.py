@@ -365,4 +365,24 @@ SPEC = {
             "id": "manifest",
         },
     ],
+    "plans": [
+        {
+            "key": "pilot",
+            "name": "Pilot",
+            "price": "$499 per month",
+            "features": ["3 active bounties", "QA gates and payouts", "Buyer manifest"],
+        },
+        {
+            "key": "production",
+            "name": "Production",
+            "price": "$1,999 per month",
+            "features": ["Unlimited bounties", "Per-bounty quality rules", "Contributor balances and payout records"],
+        },
+        {
+            "key": "enterprise",
+            "name": "Enterprise",
+            "price": "Contact sales",
+            "features": ["Managed collection programs", "Dedicated support"],
+        },
+    ],
 }
