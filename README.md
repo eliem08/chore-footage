@@ -9,7 +9,7 @@
 
 **The problem:** Robot learning needs huge amounts of real household footage, and sourcing it with consent, quality control and fair pay is slow and messy.
 
-**What you get:** Bounties, consent and quality gates, duplicate-payout protection, quotas, contributor payouts and a buyer-ready manifest.
+**What you get:** Bounties, consent and quality gates, duplicate-payout protection, quotas, contributor payouts and a buyer-ready manifest. Payouts go to contributors through Stripe Connect, exactly once.
 
 ## Quickstart
 
@@ -34,7 +34,7 @@ docker build -t chore-footage . && docker run -p 8000:8000 -e API_KEYS=sk_... -v
 
 Every API call needs `Authorization: Bearer <key>` once any key exists; a server on a public address refuses to start without one. Calls are rate-limited per key (60/min, `--rate`) and metered: `chore-footage-web usage` prints calls per key for billing.
 
-Endpoints: `POST /api/bounties`, `POST /api/demo`, `POST /api/bounty-add`, `POST /api/submit`, `POST /api/status`, `POST /api/balances`, `POST /api/payout`, `POST /api/manifest`, plus `GET /healthz` and `GET /api/spec` (machine-readable field list).
+Endpoints: `POST /api/bounties`, `POST /api/demo`, `POST /api/bounty-add`, `POST /api/submit`, `POST /api/status`, `POST /api/balances`, `POST /api/payout`, `POST /api/manifest`, `POST /api/payee-onboard`, `POST /api/payee-status`, `POST /api/payout-send`, plus `GET /healthz` and `GET /api/spec` (machine-readable field list).
 Files are sent as `{"name": ..., "content": ...}`, folders as `{"files": [...]}` or a base64 zip.
 
 ## Deploy and sell
@@ -93,6 +93,30 @@ pip install -e .
 chore-footage bounties
 chore-footage demo
 ```
+
+## Paying contributors through Stripe Connect
+
+The ledger says what is owed; these commands pay it:
+
+```bash
+chore-footage payee-onboard ana --email them@example.com   # creates a Stripe Express account, prints its onboarding link
+chore-footage payee-status ana                                # can that account receive transfers yet?
+chore-footage payout-send --dry-run                                  # who would be paid what
+chore-footage payout-send                                            # pay it
+```
+
+- `payout-send` transfers each contributor's unpaid balance, less anything already sent.
+- Each transfer's Stripe idempotency key comes from the ledger's state, so running it twice, or retrying after a
+  timeout, never pays twice.
+- Payees still finishing Stripe's onboarding are skipped and named, and a failed transfer is reported, not
+  recorded.
+- Transfers are logged in `<store>.connect.json` beside the ledger.
+- Set `CONNECT_STRIPE_KEY` to the platform's Stripe secret key. It is kept apart from `STRIPE_SECRET_KEY`,
+  which the hosted server uses to sell its own plans. Also set `PUBLIC_URL`, where Stripe sends payees back
+  after onboarding.
+- Transfers draw on the platform's Stripe balance, so the buyers' money has to be collected there first
+  (Checkout, Payment Links or invoices). Stripe refuses a transfer the balance cannot cover.
+- It is built to Stripe's Connect API and tested against a stand-in, not yet against a live account.
 
 ## Roadmap
 

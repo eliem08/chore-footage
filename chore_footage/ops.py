@@ -12,9 +12,10 @@ import time
 from collections import defaultdict
 from dataclasses import asdict
 
+from . import connect
 from .core import RES_ORDER, Bounty, Clip, Marketplace, Review
 
-OPS = ("bounty-add", "submit", "status", "balances", "payout", "manifest")
+OPS = ("bounty-add", "submit", "status", "balances", "payout", "manifest", *connect.COMMANDS)
 MAX_CLIP_BYTES = 2 * 1024**3
 
 
@@ -100,11 +101,14 @@ def add_ops(sub):
     p.add_argument("contributor")
     p.add_argument("--reference", required=True, help="your payment reference")
     sub.add_parser("manifest", help="the dataset manifest for buyers (JSON lines)")
+    connect.add_commands(sub)
     for name in OPS:
         sub.choices[name].add_argument("--store", default=store)
 
 
 def run_ops(a) -> int:
+    if a.cmd in connect.COMMANDS:
+        return connect.run_command(a, _unpaid, "chore-footage", _settle)
     try:
         mp = load(a.store)
         code = _run(mp, a)
@@ -182,3 +186,16 @@ def _run(mp: Marketplace, a) -> int:
         text = mp.export_manifest()
         print(text if text else "no accepted clips yet")
     return 0
+
+
+def _unpaid(store: str) -> dict:
+    """Each contributor's unpaid balance (manual `payout` and Connect payouts both lower it)."""
+    return {c: v for c, v in load(store).balances.items() if v > 0}
+
+
+def _settle(store: str, contributor: str, amount: float, transfer_id: str):
+    """A Connect transfer is a payout in this ledger too, so `payout` can never pay it again."""
+    mp = load(store)
+    mp.balances[contributor] = round(mp.balances.get(contributor, 0.0) - amount, 2)
+    mp.paid.append({"contributor": contributor, "amount": amount, "reference": transfer_id, "ts": int(time.time())})
+    save(mp, store)
